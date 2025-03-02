@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<link rel="stylesheet" href="./icons/style.css" />
+		<link rel="stylesheet" href="css/style.css" />
+		<title>МСП</title>
+	</head>
+
+	<body>
+		<div class="window">
+			<!-- Основное окно -->
+
+			<header class="head">
+				<!-- шапка -->
+				<div class="head__name">
+					<!--доготип-->
+					<div class="head__logo">
+						<img src="./img/_1501239731648.png" alt="логотип" />
+					</div>
+				</div>
+				<div class="head__nav-menu">
+					<!--навигация-->
+					<button class="head__item-nav minimize-window">&ndash;</button>
+					<button class="head__item-nav">?</button>
+					<button class="head__item-nav close-window">X</button>
+				</div>
+			</header>
+
+			<!-- Основной контент -->
+			<main class="container">
+				<!-- блок поиска -->
+				<div class="container__search">
+					<label for="user-search" class="container__search-label"
+						>Диагноз по мкб-10
+					</label>
+					<form action="/" class="container__form-search">
+						<input
+							class="container__input"
+							type="text"
+							name="user-search"
+							id="user-search"
+							placeholder="Введите диагноз"
+						/>
+						<button type="submit" class="container__but-search">
+							<i class="ic_search"></i>
+						</button>
+					</form>
+
+					<!-- выпадающее окно с вариантами по первым 3 символам -->
+					<div id="suggestions" class="container__suggestions search-container">
+						<ul class="container__suggestions-list" id="suggestions-list"></ul>
+					</div>
+				</div>
+
+				<!-- выпадающий блок с вариантами анализов -->
+				<div id="analysis-results" class="analysis-results">
+
+					<!-- информационный текст в окне с анализами -->
+					<div
+						class="analysis-results__info-description" 
+						id="analysis-info"
+					></div>
+					<!-- контейнер в который будут добавляться варианты анализов -->
+					<div
+						id="analysis-options-container"
+						class="analysis-options-container"
+					></div>
+				</div>
+
+				<!-- Шаблон для одного варианта анализа -->
+				<template id="analysis-item-template">
+					<div class="analysis-result-item">
+						<input type="checkbox" class="analysis-option-checkbox" />
+						<label></label>
+
+						<!-- блок с кнопкой "?" и текстом пояснения -->
+						<div class="tooltip-container">
+							<button class="tooltip-container__info-button">?</button>
+							<div class="tooltip-container__info-tooltip">
+								<button class="tooltip-container__close-tooltip">X</button>
+								<div class="tooltip-container__tooltip-text"></div>
+							</div>
+						</div>
+					</div>
+				</template>
+
+				<!-- Кнопки -->
+				<div class="button">
+					<button type="submit" class="btn-reset">Сброс</button>
+					<button type="submit" class="btn-copy">Копировать в буфер</button>
+				</div>
+
+				<!-- Окно уведомления копирования -->
+				<div class="notification-container"></div>
+
+				<!-- окно Ошибка поиска -->
+				<div class="error-popup">
+					<div class="error-popup__content">
+						<p class="error-popup__text">
+							Найдено более 20 диагнозов.
+							<br />
+							Уточните поиск!
+						</p>
+						<button class="error-popup__btn-error">Ok</button>
+					</div>
+				</div>
+			</main>
+		</div>
+
+		<script src="script.js"></script>
+	</body>
+</html>

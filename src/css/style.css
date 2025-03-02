@@ -1,0 +1,733 @@
+@charset "UTF-8";
+/**
+  Нормализация блочной модели
+ */
+*,
+::before,
+::after {
+  box-sizing: border-box;
+}
+
+/**
+  Убираем внутренние отступы слева тегам списков,
+  у которых есть атрибут class
+ */
+:where(ul, ol):where([class]) {
+  padding-left: 0;
+}
+
+/**
+  Убираем внешние отступы body и двум другим тегам,
+  у которых есть атрибут class
+ */
+body,
+:where(blockquote, figure):where([class]) {
+  margin: 0;
+}
+
+/**
+  Убираем внешние отступы вертикали нужным тегам,
+  у которых есть атрибут class
+ */
+:where(h1, h2, h3, h4, h5, h6, p, ul, ol, dl) {
+  margin-block: 0;
+}
+
+:where(dd[class]) {
+  margin-left: 0;
+}
+
+:where(fieldset[class]) {
+  margin-left: 0;
+  padding: 0;
+  border: none;
+}
+
+:where(a) {
+  text-decoration: none;
+}
+
+/**
+  Убираем стандартный маркер маркированному списку,
+  у которого есть атрибут class
+ */
+:where(ul[class]) {
+  list-style: none;
+}
+
+:where(address[class]) {
+  font-style: normal;
+}
+
+/**
+  Обнуляем вертикальные внешние отступы параграфа,
+  объявляем локальную переменную для внешнего отступа вниз,
+  чтобы избежать взаимодействие с более сложным селектором
+ */
+p {
+  --paragraphMarginBottom: 24px;
+  margin-block: 0;
+}
+
+/**
+  Внешний отступ вниз для параграфа без атрибута class,
+  который расположен не последним среди своих соседних элементов
+ */
+p:where(:not([class]):not(:last-child)) {
+  margin-bottom: var(--paragraphMarginBottom);
+}
+
+/**
+  Упрощаем работу с изображениями и видео
+ */
+img,
+video {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/**
+  Наследуем свойства шрифт для полей ввода
+ */
+input,
+textarea,
+select,
+button {
+  font: inherit;
+}
+
+html {
+  /**
+    Пригодится в большинстве ситуаций
+    (когда, например, нужно будет "прижать" футер к низу сайта)
+   */
+  height: 100%;
+  /**
+    Убираем скачок интерфейса по горизонтали
+    при появлении / исчезновении скроллбара
+   */
+  scrollbar-gutter: stable;
+}
+
+/**
+  Плавный скролл
+ */
+html,
+:has(:target) {
+  scroll-behavior: smooth;
+}
+
+body {
+  /**
+    Пригодится в большинстве ситуаций
+    (когда, например, нужно будет "прижать" футер к низу сайта)
+   */
+  min-height: 100%;
+}
+
+/**
+  Нормализация высоты элемента ссылки при его инспектировании в DevTools
+ */
+a:where([class]) {
+  display: inline-flex;
+}
+
+/**
+  Курсор-рука при наведении на элемент
+ */
+button,
+label {
+  cursor: pointer;
+}
+
+/**
+  Приводим к единому цвету svg-элементы
+  (за исключением тех, у которых уже указан
+  атрибут fill со значением 'none' или начинается с 'url')
+ */
+:where([fill]:not([fill='none'], [fill^='url'])) {
+  fill: currentColor;
+}
+
+/**
+  Приводим к единому цвету svg-элементы
+  (за исключением тех, у которых уже указан
+  атрибут stroke со значением 'none')
+ */
+:where([stroke]:not([stroke='none'], [stroke^='url'])) {
+  stroke: currentColor;
+}
+
+/**
+  Чиним баг задержки смены цвета при взаимодействии с svg-элементами
+ */
+svg * {
+  transition-property: fill, stroke;
+}
+
+/**
+  Приведение рамок таблиц в классический 'collapse' вид
+ */
+:where(table) {
+  border-collapse: collapse;
+  border-color: currentColor;
+}
+
+/**
+  Удаляем все анимации и переходы для людей,
+  которые предпочитают их не использовать
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+h6 {
+  font-size: 1.25rem;
+}
+
+h5 {
+  font-size: 1.5rem;
+}
+
+h4 {
+  font-size: 1.75rem;
+}
+
+h3 {
+  font-size: 2rem;
+}
+
+h2 {
+  font-size: 2.25rem;
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+
+body {
+  font-size: 1rem;
+  font-family: rubik, sans-serif;
+  background: #CACACA;
+  padding: 150px;
+}
+
+/* основное окно*/
+.window {
+  width: 758px;
+  height: 972px;
+  background-color: #eaf8ff;
+  padding: 0px 30px 42px 30px;
+  border-radius: 20px;
+  margin: auto;
+  overflow: hidden;
+  position: relative;
+  transition: height 0.3s ease, opacity 0.3s ease;
+  /* шапка*/
+  /* контент поиск и варианты диагноза*/
+  /* блок с анализами */
+}
+
+.window__hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.window .head {
+  width: 758px;
+  height: 52px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 30px;
+  margin: 0px -30px 68px -30px;
+  background: linear-gradient(-100deg, #D9D9D9, #F6F6F6);
+  border-radius: 20px 20px 0 0;
+}
+
+.window .head img {
+  max-height: 100%;
+}
+
+.window .head__nav-menu {
+  display: flex;
+  gap: 10px;
+}
+
+.window .head__item-nav {
+  width: 24px;
+  height: 24px;
+  /* border: none */
+  /* background-color: transparent */
+}
+
+.window .head__item-nav__hover {
+  background: #b59b9b;
+}
+
+.window.minimized {
+  height: 52px;
+}
+
+.window.minimized > :not(.head) {
+  display: none;
+}
+
+.window .container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  /* блок поиска*/
+  /* визуальное объединение окна вариантов и строки поиска */
+}
+
+.window .container__search {
+  width: 100%;
+  position: relative;
+}
+
+.window .container__search-label {
+  font-size: 1.25rem;
+  line-height: 1.25rem;
+  letter-spacing: 0.00625rem;
+  color: #5E6E75;
+  font-weight: 600;
+}
+
+.window .container__form-search {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 18px 0 10px 0;
+  position: relative;
+}
+
+.window .container__input {
+  width: 572px;
+  height: 60px;
+  font-size: 1.25rem;
+  border: 1px solid;
+  border-radius: 10px;
+  padding: 18px 22px;
+  font-weight: 500;
+  outline: none;
+  background-color: #ffff;
+}
+
+.window .container__input:focus {
+  outline: none;
+}
+
+.window .container .no-border-bottom {
+  border-bottom: none;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  outline: none;
+}
+
+.window .container .no-bg {
+  background-color: transparent;
+}
+
+.window .container__but-search {
+  width: 102px;
+  height: 60px;
+  border: none;
+  background-color: #1FAEA9;
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 1.75rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  /* окно с вариантами поиска по 3 символам */
+}
+
+.window .container__but-search:hover {
+  background: linear-gradient(90deg, #008080 0%, #1F4A8E 100%);
+}
+
+.window .container__but-search:active {
+  background-color: #39B0AC;
+  transform: scale(0.98);
+}
+
+.window .container__suggestions {
+  display: none;
+  position: absolute;
+  width: 572px;
+  max-height: 579px;
+  padding: 22px;
+  background-color: #ffff;
+  border: 1px solid #5e6e75;
+  z-index: 10;
+  top: 80%;
+  border-top: none;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  transition: height 0.3s ease, opacity 0.3s ease;
+}
+
+.window .container__suggestions-list {
+  max-width: 490px;
+  max-height: 448px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  font-size: 1.25rem;
+}
+
+.window .container li {
+  cursor: pointer;
+  padding: 26px 0;
+  background-color: #ffff !important;
+}
+
+.window .analysis-results {
+  display: none;
+  width: 700px;
+  max-height: 576px;
+  background-color: #eaf8ff;
+  overflow-y: auto;
+  transition: height 0.3s ease, opacity 0.3s ease;
+  padding-right: 16px;
+  /*информационный текст в окне с анализами*/
+  /* список анализов с чекбоксами динамический */
+}
+
+.window .analysis-results::-webkit-scrollbar {
+  width: 10px;
+}
+
+.window .analysis-results::-webkit-scrollbar-thumb {
+  background-color: #59C0BC;
+  border-radius: 4px;
+  border: 2px solid #eaf8ff;
+}
+
+.window .analysis-results::-webkit-scrollbar-thumb:hover {
+  background-color: #3e8280;
+}
+
+.window .analysis-results::-webkit-scrollbar-track {
+  background: #ffff;
+}
+
+.window .analysis-results__info-description {
+  width: 578px;
+  height: auto;
+  font-size: 0.9rem;
+  color: #324046;
+  text-align: left;
+  line-height: 125%;
+  letter-spacing: 0.1px;
+}
+
+.window .analysis-results .analysis-options-container {
+  padding-top: 18px;
+  /*  анализы */
+  /* блок с кнопкой "?" и текстом пояснения */
+}
+
+.window .analysis-results .analysis-options-container input[type="checkbox"].analysis-option-checkbox {
+  margin-right: 16px;
+  width: 24px;
+  height: 24px;
+  -webkit-appearance: none;
+  appearance: none;
+  border: 1px solid #008080;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  outline: none;
+}
+
+.window .analysis-results .analysis-options-container input[type="checkbox"].analysis-option-checkbox:checked {
+  background-color: #ffff;
+  border-color: #008080;
+}
+
+.window .analysis-results .analysis-options-container input[type="checkbox"].analysis-option-checkbox:checked:after {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 0px;
+  width: 12px;
+  height: 16px;
+  border: solid #59C0BC;
+  border-width: 0 3px 3px 0;
+  transform: rotate(35deg);
+}
+
+.window .analysis-results .analysis-options-container input[type="checkbox"].analysis-option-checkbox:hover {
+  border-color: #17837f;
+}
+
+.window .analysis-results .analysis-options-container .analysis-result-item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 16px;
+}
+
+.window .analysis-results .analysis-options-container .analysis-result-item:last-child {
+  margin-bottom: 0;
+}
+
+.window .analysis-results .analysis-options-container .analysis-result-item label {
+  width: 100%;
+  height: auto;
+  font-size: 1.125rem;
+  letter-spacing: 0.1px;
+  line-height: 110%;
+  color: #324046;
+  padding-right: 16px;
+}
+
+.window .analysis-results .analysis-options-container .tooltip-container {
+  position: relative;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.window .analysis-results .analysis-options-container .tooltip-container__info-button {
+  margin-left: auto;
+  background: #59C0BC;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1.25rem;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  text-align: center;
+  color: #ffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.window .analysis-results .analysis-options-container .tooltip-container__info-button::hover {
+  background-color: #47a09d;
+}
+
+.window .analysis-results .analysis-options-container .tooltip-container__info-button::active {
+  background-color: #59C0BC;
+  transform: scale(0.98);
+}
+
+.window .analysis-results .analysis-options-container .tooltip-container__info-tooltip {
+  width: 308px;
+  height: 143px;
+  position: absolute;
+  right: 140%;
+  top: 200%;
+  transform: translate(-10px, -50%);
+  background-color: #f1f1f1;
+  border: 1px solid #ccc;
+  padding: 17px 40px 14px 17px;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  color: #324046;
+  z-index: 10;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.window .analysis-results .analysis-options-container .tooltip-container__info-tooltip:before {
+  content: "";
+  position: absolute;
+  top: 26%;
+  left: 306px;
+  transform: translateY(-50%);
+  border-width: 20px;
+  border-style: solid;
+  border-color: transparent;
+  border-left-color: #f1f1f1;
+}
+
+.window .analysis-results .analysis-options-container .tooltip-container__info-tooltip:after {
+  content: "";
+  position: absolute;
+  top: 26%;
+  left: 307px;
+  transform: translateY(-50%);
+  border-width: 20px;
+  border-style: solid;
+  border-color: transparent;
+  border-left-color: #ccc;
+  z-index: -1;
+}
+
+.window .analysis-results .analysis-options-container .tooltip-container__info-tooltip.active {
+  opacity: 1;
+  visibility: visible;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.window .analysis-results .analysis-options-container .tooltip-container__tooltip-text {
+  width: 245px;
+  height: 100%;
+  padding: 6px;
+  overflow-y: scroll;
+  color: #324046;
+  font-size: 0.8rem;
+  letter-spacing: 0.1px;
+  line-height: 125%;
+}
+
+.window .analysis-results .analysis-options-container .tooltip-container__tooltip-text::-webkit-scrollbar {
+  width: 3px;
+}
+
+.window .analysis-results .analysis-options-container .tooltip-container__tooltip-text::-webkit-scrollbar-thumb {
+  background-color: #59C0BC;
+}
+
+.window .analysis-results .analysis-options-container .tooltip-container__tooltip-text::-webkit-scrollbar-track {
+  border-radius: 4px;
+  border: 2px solid #eaf8ff;
+}
+
+.window .analysis-results .analysis-options-container .tooltip-container__close-tooltip {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: none;
+  border: none;
+  font-size: 0.8rem;
+  color: #324046;
+  cursor: pointer;
+}
+
+/* блок кнопки */
+.button {
+  display: flex;
+  position: absolute;
+  bottom: 41px;
+  left: 30px;
+}
+
+.btn-reset {
+  width: 259px;
+  height: 60px;
+  border: 1px solid #008080;
+  border-radius: 8px;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #324046;
+  margin-right: 24px;
+  z-index: 100;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-reset:hover {
+  background-color: #AAEBE8;
+}
+
+.btn-reset:active {
+  background-color: #DAFFFD;
+  transform: scale(0.98);
+}
+
+.btn-copy {
+  width: 415px;
+  height: 60px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: #59C0BC;
+  z-index: 100;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-copy:hover {
+  background: linear-gradient(90deg, #008080 0%, #1F4A8E 100%);
+}
+
+.btn-copy:active {
+  background-color: #39B0AC;
+  transform: scale(0.98);
+}
+
+/* уведомление копирования*/
+.notification-container {
+  width: 361px;
+  height: 168px;
+  position: absolute;
+  top: 324px;
+  right: 204px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 1000;
+}
+
+/* Уведомление копирования стили */
+.notification {
+  width: 351px;
+  height: 168px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffff;
+  color: #000;
+  padding: 12px 20px;
+  border-radius: 6px;
+  font-size: 1rem;
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
+}
+
+/* модальное окно ошибка */
+.error-popup {
+  display: none;
+  width: 351px;
+  height: 168px;
+  background-color: #ffff;
+  position: absolute;
+  right: 204px;
+  top: 324px;
+  padding-top: 39px;
+  z-index: 1000;
+}
+
+.error-popup__active {
+  display: block;
+}
+
+.error-popup__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.error-popup__text {
+  line-height: 20px;
+  font-weight: 400;
+  color: #CE696D;
+  opacity: 0.7;
+  text-align: center;
+  margin-bottom: 18px;
+}
+
+.error-popup__btn-error {
+  width: 155px;
+  height: 44px;
+  color: #ffff;
+  background-color: #59C0BC;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
